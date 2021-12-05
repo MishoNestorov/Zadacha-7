@@ -1,0 +1,338 @@
+<html>
+<head>
+	<style>
+		#field {
+			position:relative;
+			width:500px;
+			height:500px;
+			border:1px solid black;
+			overflow:hidden;
+		}
+		
+		#object {
+			position: absolute;
+			top: 200px;
+			left: 200px;
+			height: 100px;
+			width: 100px;
+			z-index: 1;
+		}
+		#left{
+			position: absolute;
+			top: 35px;
+			left: 0px;
+			width: 30px;
+		}
+		#right{
+			position: absolute;
+			top: 35px;
+			left: 70px;
+			width: 30px;
+		}
+		#up{
+			position: absolute;
+			top: 0px;
+			left: 35px;
+			height: 30px;
+		}
+		#down{
+			position: absolute;
+			top: 70px;
+			left: 35px;
+			height: 30px;
+		}
+		#square{
+			position: absolute;
+			top: 30px;
+			left: 30px;
+			width: 40px;
+		}
+		.scoreboard-imgs{
+			position: absolute;
+			width: 80px;
+			top: 50px;
+			left: 510px;
+		}
+		.scoreboard{
+			position: absolute;
+			width:100px;
+			top: 33px;
+			left: 560px;
+		}
+		.fruit{
+			width: 40px;
+		}
+		.cloning{
+			position:absolute;
+			width: 35px;
+			height: auto;
+		}
+		.scoreboard p{
+			margin-top: 23px;
+		}
+		#Timer{
+			position: absolute;
+		}
+		#Score{
+			position: absolute;
+		}
+		#YouScore{
+			position: absolute;
+			font-size: 32pt;
+			top: 450px;
+			left: 300px;
+			font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+			color: white;	
+		}
+	</style>
+</head>
+<body onkeydown="keyDown(event)">
+	<div id="Timer">
+		<p id="time"></p>
+	</div>
+	<div id="Score">
+		<p id="score"></p>
+	</div>
+	<div id="field">
+		<div id="object">
+			<img id="left" src="left.png" onclick="goLeft()" />
+			<img id="right" src="right.png" onclick="goRight()" />
+			<img id="up" src="up.png" onclick="goUp()" />
+			<img id="down" src="down.png" onclick="goDown()" />
+			<img id="square" src="square.png" onclick="AddPoints()" />
+		</div>
+	</div>
+	<div id="ScoreboardImgs"class="scoreboard-imgs">
+		<img id="apple1" class="fruit" src="Apple.png" />
+		<img id="apricot1" class="fruit" src="Apricot.png" />
+		<img id="cherry1" class="fruit" src="Cherry.png" />
+		<img id="kiwi1" class="fruit" src="Kiwi.png" />
+		<img id="lemon1" class="fruit" src="Lemon.png" />
+		<img id="orange1" class="fruit" src="Orange.png" />
+		<img id="peach1" class="fruit" src="Peach.png" />
+		<img id="pear1" class="fruit" src="Pear.png" />
+		<img id="strawberry1" class="fruit" src="Strawberry.png" />
+		<img id="tomato1" class="fruit" src="Tomato.png" />
+	</div>
+	<div class="fruits-imgs" style="display:none">
+		<img id="apple" class="cloning" src="Apple.png" />
+		<img id="apricot" class="cloning" src="Apricot.png" />
+		<img id="cherry" class="cloning" src="Cherry.png" />
+		<img id="kiwi" class="cloning" src="Kiwi.png" />
+		<img id="lemon" class="cloning" src="Lemon.png" />
+		<img id="orange" class="cloning" src="Orange.png" />
+		<img id="peach" class="cloning" src="Peach.png" />
+		<img id="pear" class="cloning" src="Pear.png" />
+		<img id="strawberry" class="cloning" src="Strawberry.png" />
+		<img id="tomato" class="cloning" src="Tomato.png" />
+	</div>
+	<div id="Scoreboard" class="scoreboard">
+		<p>- 1 points</p>
+		<p>- 2 points</p>
+		<p>- 3 points</p>
+		<p>- 4 points</p>
+		<p>- 4 points</p>
+		<p>- 4 points</p>
+		<p>- 5 points</p>
+		<p>- 5 points</p>
+		<p>- 5 points</p>
+		<p>- 5 points</p>
+	</div>
+	<div id="GameOverScreen" style="display:none">
+		<img id="game-over" src="GamerOverImg.jpg" />
+		<p id="YouScore"></p>
+	</div>
+	<script>
+		var objectX = 250;
+		var objectY = 250;
+		var velX = 0;
+		var velY = 0;
+		var fruitX = [];
+		var fruitY = [];
+		var fruitNode = [];
+		var fruitType = [];
+		var fruitVelY = 5;
+		var totalpoints = 0;
+		var countdown = 60;
+		let fruits = ['apple', 'tomato']
+		
+		function AddFruit() {
+			var x = 20 + Math.random() * 460;
+			var y = 20 + Math.random() * 460;
+			var randvar = Math.floor(Math.random() * 10);
+
+			if(randvar==0){
+				var node = apple.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==1){
+				var node = apricot.cloneNode(true);
+				node.removeAttribute("id");
+			}	
+			if(randvar==2){
+				var node = cherry.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==3){
+				var node = kiwi.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==4){
+				var node = lemon.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==5){
+				var node = orange.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==6){
+				var node = peach.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==7){
+				var node = pear.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==8){
+				var node = strawberry.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			if(randvar==9){
+				var node = tomato.cloneNode(true);
+				node.removeAttribute("id");
+			}
+			node.style.left = (x - 20) + "px";
+			node.style.top = (y - 20) + "px";
+			
+			field.appendChild(node);
+			
+			fruitX.push(x);
+			fruitY.push(y);
+			fruitNode.push(node);
+			fruitType.push(randvar);
+		}
+			
+		function goLeft() {
+			velX = -10;	
+		}
+		
+		function goRight() {
+			velX = 10;
+		}
+		function goUp() {
+			velY = -10;
+		}
+		
+		function goDown() {
+			velY = 10;
+		}
+		
+		function gameOver() {
+			field.style.display = "none";
+			Timer.style.display = "none";
+			Score.style.display = "none";
+			ScoreboardImgs.style.display = "none";
+			Scoreboard.style.display = "none";
+			GameOverScreen.style.display = "";
+			var youscore = document.getElementById("YouScore");
+			youscore.innerHTML = ( "You scored: " ) + totalpoints + ( " points!" ) ;
+		}
+		//239 279 239 239
+		function update() {
+			for(var i = fruitNode.length - 1; i >= 0; i--) {
+				fruitY[i] += velY;
+				fruitNode[i].style.top = (fruitY[i] - 20) + "px";
+				if(fruitY[i]>=520){
+					fruitY[i] += -520;
+					fruitNode[i].style.top = (fruitY[i] - 20) + "px";
+				}
+				if(fruitY[i]<=0){
+					fruitY[i] += 520;
+					fruitNode[i].style.top = (fruitY[i] - 20) + "px";
+				}
+			}
+			for(var i = fruitNode.length - 1; i >= 0; i--) {
+				fruitX[i] += velX;
+				fruitNode[i].style.left = (fruitX[i] - 20) + "px";
+				if(fruitX[i]>=500){
+					fruitX[i] += -500;
+					fruitNode[i].style.left = (fruitY[i] - 20) + "px";
+				}
+				if(fruitX[i]<=0){
+					fruitX[i] += 500;
+					fruitNode[i].style.left = (fruitY[i] - 20) + "px";
+				}
+			}
+		}
+		function AddPoints(){
+			for(var i = fruitNode.length - 1; i >= 0; i--) {
+				if(fruitY[i]>=239 && fruitY[i]<=279 && fruitX[i]>=239 && fruitX[i]<=279){
+					if(fruitType[i] == 0){
+						totalpoints += 1;
+						ScorePoints();
+					}
+					if(fruitType[i] == 1){
+						totalpoints += 2;
+						ScorePoints();
+					}
+					if(fruitType[i] == 2){
+						totalpoints += 3;
+						ScorePoints();
+					}
+					if(fruitType[i] == 3 || fruitType[i] == 4 || fruitType[i] == 5){
+						totalpoints += 4;
+						ScorePoints();
+					}
+					if(fruitType[i] == 6 || fruitType[i] == 7 || fruitType[i] == 8 || fruitType[i] == 9){
+						totalpoints += 5;
+						ScorePoints();
+					}
+					field.removeChild(fruitNode[i]);
+					fruitX.splice(i, 1);
+					fruitY.splice(i, 1);
+					fruitNode.splice(i, 1);
+					fruitType.splice(i, 1);
+					AddFruit();
+				}
+			}
+		}
+		function ScorePoints(){
+			var score = document.getElementById("Score");
+			score.innerHTML = ( "Score:" ) + totalpoints;
+		}
+		function Time(){
+			var time = document.getElementById("time");
+			time.innerHTML = ( "Timer:" ) + countdown--;
+			if(countdown == 0){
+				gameOver();
+			}
+		}
+		function keyDown(event) {
+			if(event.keyCode === 37) {
+				goLeft();
+			}
+			if(event.keyCode === 39) {
+				goRight();
+			}
+			if(event.keyCode === 38) {
+				goUp();
+			}
+			if(event.keyCode === 40) {
+				goDown();
+			}
+			if(event.keyCode === 32) {
+				AddPoints();
+			}
+		}
+		ScorePoints();
+		AddFruit();
+		AddFruit();
+		AddFruit();
+		AddFruit();
+		AddFruit();
+		AddFruit();
+		setInterval(update, 200);
+		setInterval(Time, 1000);
+	</script>
+</body>
+</html>
